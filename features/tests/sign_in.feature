@@ -1,5 +1,5 @@
 # Created by faris at 7/4/2024
-Feature: Target logged out User can Navigate to Sign In
+Feature: Tests for Target.com cart functionality
 
 
   Scenario: User can Navigate to Sign In
