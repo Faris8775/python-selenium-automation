@@ -1,6 +1,12 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
+
+CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
+MAIN_SIGN_IN = (By.XPATH, "//a[@aria-label='Account, sign in']")
+SIDE_SIGN_IN = (By.XPATH, "//a[@data-test='accountNav-signIn']//span[text()='Sign in']")
+SEARCH_BUTTON = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
 
 
 @given('Open target main page')
@@ -25,23 +31,23 @@ def search_product(context):
 
 @when('Click on Cart icon')
 def click_cart_icon(context):
-    context.driver.find_element(By.CSS_SELECTOR, "[data-test='@web/CartLink']").click()
-    sleep(4)
+    context.driver.wait.until(EC.element_to_be_clickable(*CART_ICON)).click()
+
 
 
 @when('Click Sign In')
 def main_sign_in(context):
     # click the sign in on main page
-    context.driver.find_element(By.XPATH, "//a[@aria-label='Account, sign in']").click()
+    context.driver.wait.until(EC.element_to_be_clickable(MAIN_SIGN_IN)).click()
     # wait for the SignIn sidebar to load
-    sleep(2)
+    # sleep(2)
 
 @when('From right side navigation menu, click Sign In')
 def side_sign_in(context):
     # click the side nav sign in
-    context.driver.find_element(By.XPATH, "//a[@data-test='accountNav-signIn']//span[text()='Sign in']").click()
+    context.driver.wait.until(EC.element_to_be_clickable(SIDE_SIGN_IN)).click()
     # wait for the SignIn sidebar to load
-    sleep(4)
+    # sleep(4)
 
 
 @when('Search for {product}')
@@ -49,7 +55,7 @@ def search_product(context, product):
     # find search field and enter text
     context.driver.find_element(By.ID, 'search').send_keys(product)
     # click search
-    context.driver.find_element(By.XPATH, "//button[@data-test='@web/Search/SearchButton']").click()
+    context.driver.find_element(*SEARCH_BUTTON).click()
     # wait for the page with search results to load
     sleep(6)
 
