@@ -4,8 +4,8 @@ from behave import given, when, then
 from time import sleep
 
 CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
-MAIN_SIGN_IN = (By.XPATH, "//a[@aria-label='Account, sign in']")
-SIDE_SIGN_IN = (By.XPATH, "//a[@data-test='accountNav-signIn']//span[text()='Sign in']")
+# MAIN_SIGN_IN = (By.XPATH, "//a[@aria-label='Account, sign in']")
+# SIDE_SIGN_IN = (By.XPATH, "//a[@data-test='accountNav-signIn']//span[text()='Sign in']")
 SEARCH_BUTTON = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
 
 
@@ -18,39 +18,45 @@ def open_target_circle(context):
     context.driver.find_element(By.CSS_SELECTOR, '#utilityNav-circle').click()
 
 
-@when('Search for product')
-def search_product(context):
-    context.app.header.search_product()
+@when('Search for {product}')
+def search_product(context, product):
+    print('Step layer:', product)
+    context.app.header.search_product(product)
 
 @when('Click on Cart icon')
 def click_cart_icon(context):
-    context.driver.wait.until(EC.element_to_be_clickable(*CART_ICON)).click()
+    # context.driver.wait.until(EC.element_to_be_clickable(*CART_ICON)).click()
+    context.app.header.click_cart()
 
 
 
 @when('Click Sign In')
 def main_sign_in(context):
     # click the sign in on main page
-    context.driver.wait.until(EC.element_to_be_clickable(MAIN_SIGN_IN)).click()
+    # context.driver.wait.until(EC.element_to_be_clickable(MAIN_SIGN_IN)).click()
     # wait for the SignIn sidebar to load
     # sleep(2)
+    context.app.header.main_sign_in()
+
 
 @when('From right side navigation menu, click Sign In')
 def side_sign_in(context):
     # click the side nav sign in
-    context.driver.wait.until(EC.element_to_be_clickable(SIDE_SIGN_IN)).click()
+    # context.driver.wait.until(EC.element_to_be_clickable(SIDE_SIGN_IN)).click()
     # wait for the SignIn sidebar to load
     # sleep(4)
+    context.app.header.side_sign_in()
 
 
-@when('Search for {product}')
-def search_product(context, product):
-    # find search field and enter text
-    context.driver.find_element(By.ID, 'search').send_keys(product)
-    # click search
-    context.driver.find_element(*SEARCH_BUTTON).click()
-    # wait for the page with search results to load
-    sleep(6)
+# @when('Search for {product}')
+# def search_product(context, product):
+#     # find search field and enter text
+#     # context.driver.find_element(By.ID, 'search').send_keys(product)
+#     # click search
+#     # context.driver.find_element(*SEARCH_BUTTON).click()
+#     # wait for the page with search results to load
+#     # sleep(6)
+#     context.app.header.search_product(product)
 
 @then('Verify search worked')
 def verify_search_results(context):
@@ -71,6 +77,17 @@ def verify_header_link_amount(context, number):
 
     # Make sure to always assert len() for multiple elements as shown above
     # because .find_elements() function never fails.
-    # This code with incorrect locator will always pass:
-    # context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav2613542']")
+
+
+@then('Verify can click every link')
+def verify_click_links(context):
+    links = context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav']")
+
+    for i in range(len(links)):
+        # Search for links again because their internal IDs changed:
+        # to avoid Stale Element Exception
+        links = context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav']")
+        print(f'Clicking on link {links[i].text}')
+        links[i].click()
+        sleep(4)
 

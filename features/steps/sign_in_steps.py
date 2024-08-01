@@ -8,6 +8,7 @@ from time import sleep
 
 @then('Verify Sign In form opened')
 def verify_sign_in(context):
-    expected_text = 'Sign into your Target account'
-    actual_text = context.driver.find_element(By.XPATH, "//h1[.//span]").text
-    assert expected_text in actual_text, f'Expected text {expected_text} is not in actual text {actual_text}'
+    # expected_text = 'Sign into your Target account'
+    # actual_text = context.driver.find_element(By.XPATH, "//h1[.//span]").text
+    # assert expected_text in actual_text, f'Expected text {expected_text} is not in actual text {actual_text}'
+    context.app.sign_in_page.verify_sign_in()
