@@ -16,10 +16,9 @@ Feature: Target main page search tests
     Then Verify correct search results URL opens for coffee
 
   # Make sure scenario names are unique:
-  Scenario: User can search for a product2 on target
+
   Scenario: User can search for a mug
     Given Open target main page
-    # .....
     When Search for mug
     Then Verify search results shown for mug
     Then Verify correct search results URL opens for mug
@@ -56,3 +55,9 @@ Feature: Target main page search tests
     Given Open target main page
     When Search for AirPods (3rd Generation)
     Then Verify that every product has a name and an image
+
+   Scenario: User can see favorites tooltip for search results
+    Given Open Target main page
+    When Search for tea
+    And Hover favorites icon
+    Then Favorites tooltip is shown
