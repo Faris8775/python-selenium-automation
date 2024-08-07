@@ -90,3 +90,8 @@ class Page:
     def verify_partial_url(self, expected_partial_url):
         actual_url = self.driver.current_url
         assert expected_partial_url in actual_url, f'Expected {expected_partial_url} not in {actual_url}'
+
+    # def verify_links(self, number, *locator):
+    #     number = int(number)
+    #     links = self.find_elements(*locator)
+    #     assert len(links) == number, f'Expected {number} links but got {len(links)}'

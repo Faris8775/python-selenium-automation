@@ -13,6 +13,9 @@ class SearchResultsPage(Page):
     LISTINGS = (By.CSS_SELECTOR, "[data-test='@web/site-top-of-funnel/ProductCardWrapper']")
     PRODUCT_TITLE = (By.CSS_SELECTOR, "[data-test='product-title']")
     PRODUCT_IMG = (By.CSS_SELECTOR, 'img')
+    ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[id*='addToCartButton']")
+    SIDE_NAV_PRODUCT_NAME = (By.CSS_SELECTOR, "[data-test='content-wrapper'] h4")
+    SIDE_NAV_ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[data-test='content-wrapper'] [id*='addToCart']")
 
 
     def hover_fav_icon(self):
@@ -44,3 +47,16 @@ class SearchResultsPage(Page):
             assert title, 'Product title not shown'
             print(title)
             product.find_element(*self.PRODUCT_IMG)
+
+    def click_add_to_cart(self):
+        self.wait_and_click(*self.ADD_TO_CART_BTN)
+        self.wait_for_element_appear(*self.SIDE_NAV_PRODUCT_NAME)
+
+    def store_product_name(self):
+        product_name = self.find_element(*self.SIDE_NAV_PRODUCT_NAME)
+        print(f'Product stored: {product_name}')
+
+    def side_nav_click_add_to_cart(self):
+        self.wait_until_clickable(*self.SIDE_NAV_ADD_TO_CART_BTN)
+
+

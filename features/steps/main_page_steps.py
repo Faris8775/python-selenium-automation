@@ -3,10 +3,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
 
-CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
-# MAIN_SIGN_IN = (By.XPATH, "//a[@aria-label='Account, sign in']")
-# SIDE_SIGN_IN = (By.XPATH, "//a[@data-test='accountNav-signIn']//span[text()='Sign in']")
-SEARCH_BUTTON = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
+# CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
+# SEARCH_BUTTON = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
 
 
 @given('Open target main page')
@@ -15,7 +13,7 @@ def open_target(context):
 
 @when('Click Target Circle page')
 def open_target_circle(context):
-    context.driver.find_element(By.CSS_SELECTOR, '#utilityNav-circle').click()
+    context.app.header.open_target_circle()
 
 
 @when('Search for {product}')
@@ -60,34 +58,22 @@ def side_sign_in(context):
 
 @then('Verify search worked')
 def verify_search_results(context):
-    expected_text = 'tea'
-    actual_text = context.driver.find_element(By.XPATH, "//div[@data-test='resultsHeading']").text
-    assert expected_text in actual_text, f'Expected {expected_text} ot in actual {actual_text}'
+    expected_text = 'product'
+    # actual_text = context.driver.find_element(By.XPATH, "//div[@data-test='resultsHeading']").text
+    # assert expected_text in actual_text, f'Expected {expected_text} ot in actual {actual_text}'
+    context.app.search_results_page.verify_search_results(expected_text)
 
 
 @then('Verify header in shown')
 def verify_header_present(context):
-    context.driver.find_element(By.CSS_SELECTOR, "[class*='utilityHeaderContainer']")
+    context.app.main_page.verify_header_present()
 
 @then('Verify header has {number} links')
 def verify_header_link_amount(context, number):
-    number = int(number)  # convert str "6" ==> to int 6
-    links = context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav']")
-    assert len(links) == number, f'Expected {number} links but got {len(links)}'
-
-    # Make sure to always assert len() for multiple elements as shown above
-    # because .find_elements() function never fails.
+    context.app.header.verify_header_link_amount(number)
 
 
 @then('Verify can click every link')
 def verify_click_links(context):
-    links = context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav']")
-
-    for i in range(len(links)):
-        # Search for links again because their internal IDs changed:
-        # to avoid Stale Element Exception
-        links = context.driver.find_elements(By.CSS_SELECTOR, "[id*='utilityNav']")
-        print(f'Clicking on link {links[i].text}')
-        links[i].click()
-        sleep(4)
+    context.app.header.verify_click_links()
 

@@ -7,12 +7,13 @@ from pages.privacy_policy_page import PrivacyPage
 from pages.search_results_page import SearchResultsPage
 from pages.target_app_page import TargetAppPage
 from pages.sign_in_page import SignInPage
+from pages.target_circle import TargetCircle
+from pages.product_page import ProductPage
 
 class Application:
     def __init__(self, driver):
 
         self.base_page = Page(driver)
-
         self.cart_page = CartPage(driver)
         self.header = Header(driver)
         self.help_page = HelpPage(driver)
@@ -21,4 +22,6 @@ class Application:
         self.search_results_page = SearchResultsPage(driver)
         self.target_app_page = TargetAppPage(driver)
         self.sign_in_page = SignInPage(driver)
+        self.target_circle = TargetCircle(driver)
+        self.product_page = ProductPage(driver)
 
